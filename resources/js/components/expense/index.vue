@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="row">
-            <router-link to="/store-category" class="btn btn-primary">Add Category</router-link>
+            <router-link to="/store-expense" class="btn btn-primary">Add Expense</router-link>
         </div>
         <br><br>
         <div class="row">
@@ -14,27 +14,29 @@
                 <!-- Simple Tables -->
                 <div class="card">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">Categories List</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Expenses List</h6>
                     </div>
                     <div class="table-responsive">
                         <table class="table align-items-center table-flush">
                             <thead class="thead-light">
                             <tr>
-                                <th>Name</th>
-                                <th class="text-center">Created At</th>
+                                <th class="pl-3 pr-3">Details</th>
+                                <th class="text-center pl-1 pr-1">Amount</th>
+                                <th class="text-center pl-1 pr-1">Expense Date</th>
                                 <th class="text-center">Action</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="category in filterSearch" :key="category.id">
-                                <td>{{ category.name }}</td>
-                                <td class="text-center">{{ category.created_at }}</td>
+                            <tr v-for="expense in filterSearch" :key="expense.id">
+                                <td class="pl-3 pr-3">{{ expense.details_limited }}</td>
+                                <td class="text-center pl-1 pr-1">{{ expense.amount }}</td>
+                                <td class="text-center pl-1 pr-1">{{ expense.exp_date }}</td>
                                 <td>
                                     <div class="row h-100 justify-content-center align-items-center">
-                                        <router-link :to="{name: 'edit-category', params:{id:category.id}}"
+                                        <router-link :to="{name: 'edit-expense', params:{id:expense.id}}"
                                                      class="btn btn-sm btn-primary">Edit
                                         </router-link>&nbsp;
-                                        <a @click="deleteCategory(category.id)" class="btn btn-sm btn-danger" style="color: #ffffff;">Delete</a>
+                                        <a @click="deleteExpense(expense.id)" class="btn btn-sm btn-danger" style="color: #ffffff;">Delete</a>
                                     </div>
                                 </td>
                             </tr>
@@ -61,28 +63,28 @@
         },
         data() {
             return {
-                categories: [],
+                expenses: [],
                 searchTerm: ''
             }
         },
         computed: {
             filterSearch() {
-                return this.categories.filter(category => {
-                    return category.name.match(this.searchTerm)
-                        || category.created_at.match(this.searchTerm)
+                return this.expenses.filter(expense => {
+                    return expense.details.match(this.searchTerm)
+                        || expense.exp_date.match(this.searchTerm)
                 })
             }
         },
 
         methods: {
-            allCategories() {
-                axios.get('/api/categories')
+            allExpenses() {
+                axios.get('/api/expenses')
                     .then(({data}) => {
-                        this.categories = data;
+                        this.expenses = data;
                     })
                     .catch()
             },
-            deleteCategory(id) {
+            deleteExpense(id) {
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -96,11 +98,11 @@
                         if (!User.loggedIn()){
                             this.$router.push({ name: '/'})
                         }else {
-                            axios.delete('/api/categories/' + id)
+                            axios.delete('/api/expenses/' + id)
                                 .then(res => {
                                     if (res.data.status) {
-                                        this.categories = this.categories.filter(category => {
-                                            return category.id != id
+                                        this.expenses = this.expenses.filter(expense => {
+                                            return expense.id != id
                                         });
                                         Swal.fire(
                                             'Deleted!',
@@ -116,7 +118,7 @@
                                     }
                                 })
                                 .catch(() => {
-                                    this.$router.push({name: 'categories'});
+                                    this.$router.push({name: 'expenses'});
                                     Swal.fire(
                                         'Error!',
                                         'Something wrong happened! Please, try again.',
@@ -129,7 +131,7 @@
             }
         },
         mounted() {
-            this.allCategories();
+            this.allExpenses();
         }
     }
 </script>

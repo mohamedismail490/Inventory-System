@@ -48,4 +48,13 @@ Route::group([ 'middleware' => 'api'], function () {
         Route::patch('{product}', [Api\ProductController::class, 'update']);
         Route::delete('{product}', [Api\ProductController::class, 'destroy']);
     });
+
+    //Expenses
+    Route::group(['prefix' => 'expenses'], function () {
+        Route::get('', [Api\ExpenseController::class, 'index']);
+        Route::post('', [Api\ExpenseController::class, 'store']);
+        Route::get('{expense}', [Api\ExpenseController::class, 'show']);
+        Route::patch('{expense}', [Api\ExpenseController::class, 'update']);
+        Route::delete('{expense}', [Api\ExpenseController::class, 'destroy']);
+    });
 });

@@ -109,7 +109,6 @@
                         }else {
                             axios.delete('/api/employees/' + id)
                                 .then(res => {
-                                    console.log(res.data);
                                     if (res.data.status) {
                                         this.employees = this.employees.filter(employee => {
                                             return employee.id != id

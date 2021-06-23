@@ -117,7 +117,6 @@
                         }else {
                             axios.delete('/api/products/' + id)
                                 .then(res => {
-                                    console.log(res.data);
                                     if (res.data.status) {
                                         this.products = this.products.filter(product => {
                                             return product.id != id

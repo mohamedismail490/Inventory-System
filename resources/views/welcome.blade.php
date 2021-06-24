@@ -92,6 +92,7 @@
                         <div class="bg-white py-2 collapse-inner rounded">
                             <router-link to="/products" class="collapse-item">All Products</router-link>
                             <router-link to="/store-product" class="collapse-item">Add Product</router-link>
+                            <router-link to="/stock" class="collapse-item">Stock</router-link>
                         </div>
                     </div>
                 </li>
@@ -106,6 +107,20 @@
                         <div class="bg-white py-2 collapse-inner rounded">
                             <router-link to="/expenses" class="collapse-item">All Expenses</router-link>
                             <router-link to="/store-expense" class="collapse-item">Add Expense</router-link>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap5"
+                       aria-expanded="true" aria-controls="collapseBootstrap5">
+                        <i class="far fa-fw fa-window-maximize"></i>
+                        <span>Salaries</span>
+                    </a>
+                    <div id="collapseBootstrap5" class="collapse" aria-labelledby="headingBootstrap"
+                         data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <router-link to="/salaries" class="collapse-item">All Salaries</router-link>
+                            <router-link to="/given-salaries" class="collapse-item">Pay Salary</router-link>
                         </div>
                     </div>
                 </li>

@@ -20,7 +20,14 @@ Route::group([ 'middleware' => 'api'], function () {
         Route::get('{employee}', [Api\EmployeeController::class, 'show']);
         Route::patch('{employee}', [Api\EmployeeController::class, 'update']);
         Route::delete('{employee}', [Api\EmployeeController::class, 'destroy']);
+        //Employee Salary
+        Route::post('{employee}/pay_salary', [Api\EmployeeController::class, 'paySalary']);
+        Route::get('paid/salaries', [Api\EmployeeController::class, 'paidSalaries']);
+        Route::get('salaries/view/{salary}', [Api\EmployeeController::class, 'viewSalaries']);
+        Route::get('salaries/{salary}', [Api\EmployeeController::class, 'showSalary']);
+        Route::patch('salaries/{salary}', [Api\EmployeeController::class, 'updateSalary']);
     });
+
 
     //Suppliers
     Route::group(['prefix' => 'suppliers'], function () {
@@ -47,6 +54,7 @@ Route::group([ 'middleware' => 'api'], function () {
         Route::get('{product}', [Api\ProductController::class, 'show']);
         Route::patch('{product}', [Api\ProductController::class, 'update']);
         Route::delete('{product}', [Api\ProductController::class, 'destroy']);
+        Route::post('{product}/stock/update', [Api\ProductController::class, 'stockUpdate']);
     });
 
     //Expenses

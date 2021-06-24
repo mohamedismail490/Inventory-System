@@ -148,4 +148,23 @@ class ProductRepository{
             ];
         }
     }
+
+    public function updateProductStock($id,$request){
+        $product = $this->getProductById($id);
+        try{
+            DB::beginTransaction();
+            $product->update(['quantity' => intval($request -> quantity)]);
+            DB::commit();
+            return (object)[
+                'status'  => true,
+                'message' => 'Product Stock has been Updated Successfully',
+            ];
+        }catch (\Exception $e){
+            DB::rollback();
+            return (object)[
+                'status'  => false,
+                'message' => 'Something wrong happened! Please, try again.'
+            ];
+        }
+    }
 }

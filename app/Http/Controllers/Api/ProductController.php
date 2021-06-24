@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductCreateRequest;
+use App\Http\Requests\ProductStockUpdateRequest;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Models\Product;
 use App\Repositories\ProductRepository;
@@ -39,5 +40,10 @@ class ProductController extends Controller
     public function destroy(Product $product) {
         $destroy = $this->productRepo->destroyProduct($product -> id);
         return response()->json($destroy);
+    }
+
+    public function stockUpdate(ProductStockUpdateRequest $request, Product $product) {
+        $updateStock = $this->productRepo->updateProductStock($product -> id, $request);
+        return response()->json($updateStock);
     }
 }

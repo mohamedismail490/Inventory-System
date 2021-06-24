@@ -8,6 +8,14 @@ class Notification {
             timeout: 1500
         }).show();
     }
+    customSuccess(message){
+        new Noty({
+            type: 'success',
+            layout: 'topRight',
+            text: ((typeof (message) != 'undefined') && (message !== '')) ? message : 'Successfully Done!',
+            timeout: 1500
+        }).show();
+    }
 
     alert(){
         new Noty({
@@ -31,7 +39,7 @@ class Notification {
         new Noty({
             type: 'error',
             layout: 'topRight',
-            text: message,
+            text: ((typeof (message) != 'undefined') && (message !== '')) ? message : 'Something went Wrong !',
             timeout: 1500
         }).show();
     }

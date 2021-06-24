@@ -10,27 +10,36 @@ let home = require('./components/home').default;
 //Employees
 let employees     = require('./components/employee/index').default;
 let storeEmployee = require('./components/employee/create').default;
-let editEmployee  = require('./components/employee/edit.vue').default;
+let editEmployee  = require('./components/employee/edit').default;
 
 //Suppliers
 let suppliers     = require('./components/supplier/index').default;
 let storeSupplier = require('./components/supplier/create').default;
-let editSupplier  = require('./components/supplier/edit.vue').default;
+let editSupplier  = require('./components/supplier/edit').default;
 
 //Categories
 let categories    = require('./components/category/index').default;
 let storeCategory = require('./components/category/create').default;
-let editCategory  = require('./components/category/edit.vue').default;
+let editCategory  = require('./components/category/edit').default;
 
 //Products
 let products     = require('./components/product/index').default;
 let storeProduct = require('./components/product/create').default;
-let editProduct  = require('./components/product/edit.vue').default;
+let editProduct  = require('./components/product/edit').default;
+let stock        = require('./components/product/stock').default;
+let editStock    = require('./components/product/stockEdit').default;
 
 //Expenses
 let expenses     = require('./components/expense/index').default;
 let storeExpense = require('./components/expense/create').default;
-let editExpense  = require('./components/expense/edit.vue').default;
+let editExpense  = require('./components/expense/edit').default;
+
+//Salaries
+let salaries      = require('./components/salary/index').default;
+let givenSalaries = require('./components/salary/employees').default;
+let paySalary     = require('./components/salary/create').default;
+let viewSalaries  = require('./components/salary/view').default;
+let editSalary    = require('./components/salary/edit').default;
 
 
 export const routes = [
@@ -59,10 +68,19 @@ export const routes = [
     {path: '/products', component: products, name: 'products'},
     {path: '/store-product', component: storeProduct, name: 'store-product'},
     {path: '/edit-product/:id', component: editProduct, name:'edit-product'},
+    {path: '/stock', component: stock, name: 'stock'},
+    {path: '/edit-stock/:id', component: editStock, name:'edit-stock'},
 
     //Expenses
     {path: '/expenses', component: expenses, name: 'expenses'},
     {path: '/store-expense', component: storeExpense, name: 'store-expense'},
     {path: '/edit-expense/:id', component: editExpense, name:'edit-expense'},
+
+    //Salaries
+    {path: '/salaries', component: salaries, name: 'salaries'},
+    {path: '/given-salaries', component: givenSalaries, name: 'given-salaries'},
+    {path: '/pay-salary/:id', component: paySalary, name:'pay-salary'},
+    {path: '/view-salaries/:id', component: viewSalaries, name:'view-salaries'},
+    {path: '/edit-salary/:id', component: editSalary, name:'edit-salary'},
 
 ];

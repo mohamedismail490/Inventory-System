@@ -20,7 +20,7 @@
     <div id="wrapper">
         <!-- Sidebar -->
         <nav id="sidebar"
-             v-show="$route.path === '/' || $route.path === '/register' ||$route.path === '/forget' ? false : true"
+             v-show="$route.path === '/' || $route.path === '/register' || $route.path === '/forget' ? false : true"
              style="display: none;">
             <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
                 <router-link to="/home" class="sidebar-brand d-flex align-items-center justify-content-center">
@@ -124,10 +124,23 @@
                         </div>
                     </div>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap6"
+                       aria-expanded="true" aria-controls="collapseBootstrap6">
+                        <i class="far fa-fw fa-window-maximize"></i>
+                        <span>Customers</span>
+                    </a>
+                    <div id="collapseBootstrap6" class="collapse" aria-labelledby="headingBootstrap"
+                         data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <router-link to="/customers" class="collapse-item">All Customers</router-link>
+                            <router-link to="/store-customer" class="collapse-item">Add Customer</router-link>
+                        </div>
+                    </div>
+                </li>
             </ul>
         </nav>
 
-        <!-- Sidebar -->
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 <!-- TopBar -->

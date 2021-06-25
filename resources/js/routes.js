@@ -41,6 +41,10 @@ let paySalary     = require('./components/salary/create').default;
 let viewSalaries  = require('./components/salary/view').default;
 let editSalary    = require('./components/salary/edit').default;
 
+//Customers
+let customers     = require('./components/customer/index').default;
+let storeCustomer = require('./components/customer/create').default;
+let editCustomer  = require('./components/customer/edit').default;
 
 export const routes = [
     {path: '/', component: login, name: '/'},
@@ -82,5 +86,10 @@ export const routes = [
     {path: '/pay-salary/:id', component: paySalary, name:'pay-salary'},
     {path: '/view-salaries/:id', component: viewSalaries, name:'view-salaries'},
     {path: '/edit-salary/:id', component: editSalary, name:'edit-salary'},
+
+    //Customers
+    {path: '/customers', component: customers, name: 'customers'},
+    {path: '/store-customer', component: storeCustomer, name: 'store-customer'},
+    {path: '/edit-customer/:id', component: editCustomer, name:'edit-customer'},
 
 ];

@@ -65,4 +65,14 @@ Route::group([ 'middleware' => 'api'], function () {
         Route::patch('{expense}', [Api\ExpenseController::class, 'update']);
         Route::delete('{expense}', [Api\ExpenseController::class, 'destroy']);
     });
+
+    //Customers
+    Route::group(['prefix' => 'customers'], function () {
+        Route::get('', [Api\CustomerController::class, 'index']);
+        Route::post('', [Api\CustomerController::class, 'store']);
+        Route::get('{customer}', [Api\CustomerController::class, 'show']);
+        Route::patch('{customer}', [Api\CustomerController::class, 'update']);
+        Route::delete('{customer}', [Api\CustomerController::class, 'destroy']);
+    });
+
 });

@@ -123,13 +123,13 @@
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">Products Sold</h6>
                         <div class="dropdown no-arrow">
-                            <a class="dropdown-toggle btn btn-primary btn-sm" href="#" role="button" id="dropdownMenuLink"
+                            <a class="dropdown-toggle btn btn-primary btn-sm" href="#" role="button" id="dropdownMenuLink2"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Month <i class="fas fa-chevron-down"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                 aria-labelledby="dropdownMenuLink">
-                                <div class="dropdown-header">Select Periode</div>
+                                 aria-labelledby="dropdownMenuLink2">
+                                <div class="dropdown-header">Select Period</div>
                                 <a class="dropdown-item" href="#">Today</a>
                                 <a class="dropdown-item" href="#">Week</a>
                                 <a class="dropdown-item active" href="#">Month</a>

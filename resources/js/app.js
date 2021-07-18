@@ -29,6 +29,8 @@ const Toast = Swal.mixin({
 window.Toast = Toast;
 //Sweet Alerts End
 
+window.Reload = new Vue();
+
 //Import Notification Class
 import Notification from './Helpers/Notification';
 window.Notification = Notification;

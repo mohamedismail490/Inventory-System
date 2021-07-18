@@ -46,6 +46,9 @@ let customers     = require('./components/customer/index').default;
 let storeCustomer = require('./components/customer/create').default;
 let editCustomer  = require('./components/customer/edit').default;
 
+// POS Component
+let pos = require('./components/pos/pointOfSale').default;
+
 export const routes = [
     {path: '/', component: login, name: '/'},
     {path: '/register', component: register, name: 'register'},
@@ -91,5 +94,8 @@ export const routes = [
     {path: '/customers', component: customers, name: 'customers'},
     {path: '/store-customer', component: storeCustomer, name: 'store-customer'},
     {path: '/edit-customer/:id', component: editCustomer, name:'edit-customer'},
+
+    //POS
+    { path: '/pos', component: pos, name:'pos'},
 
 ];

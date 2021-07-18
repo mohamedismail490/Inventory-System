@@ -45,6 +45,7 @@ Route::group([ 'middleware' => 'api'], function () {
         Route::get('{category}', [Api\CategoryController::class, 'show']);
         Route::patch('{category}', [Api\CategoryController::class, 'update']);
         Route::delete('{category}', [Api\CategoryController::class, 'destroy']);
+        Route::get('{id}/products', [Api\PosController::class, 'getCategoryProducts']);
     });
 
     //Products
@@ -75,4 +76,9 @@ Route::group([ 'middleware' => 'api'], function () {
         Route::delete('{customer}', [Api\CustomerController::class, 'destroy']);
     });
 
+    //Pos
+    Route::group(['prefix' => 'pos'], function () {
+        Route::get('', [Api\PosController::class, 'index']);
+        Route::post('cart/add/{id}', [Api\PosController::class, 'addToCart']);
+    });
 });

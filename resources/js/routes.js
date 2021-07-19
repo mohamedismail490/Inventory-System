@@ -49,6 +49,9 @@ let editCustomer  = require('./components/customer/edit').default;
 // POS Component
 let pos = require('./components/pos/pointOfSale').default;
 
+// Settings
+let settings = require('./components/setting/index').default;
+
 export const routes = [
     {path: '/', component: login, name: '/'},
     {path: '/register', component: register, name: 'register'},
@@ -97,5 +100,8 @@ export const routes = [
 
     //POS
     { path: '/pos', component: pos, name:'pos'},
+
+    //Settings
+    { path: '/settings', component: settings, name:'settings'},
 
 ];

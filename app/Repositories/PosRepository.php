@@ -2,11 +2,14 @@
 namespace App\Repositories;
 
 use App\Models\Pos;
-use App\Models\Product;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class PosRepository{
+
+    public $productRepo;
+    public function __construct(ProductRepository $productRepo){
+        $this -> productRepo = $productRepo;
+    }
 
     public function getCartItems(){
         return Pos::latest('id')->get();
@@ -40,7 +43,7 @@ class PosRepository{
             DB::commit();
             return (object)[
                 'status'  => true,
-                'message' => 'Product Added To Cart Successfully',
+                'message' => ($isExisted) ? 'Cart Product Updated Successfully' : 'Product Added To Cart Successfully',
             ];
         }catch (\Exception $e){
             DB::rollback();
@@ -51,39 +54,22 @@ class PosRepository{
         }
     }
 
-    public function updateProduct($id,$request){
-        $product = $this->getProductById($id);
-        $oldImage = $product -> getRawOriginal('image');
+    public function incrementCart($id){
+        $cartItem = $this -> getCartItemById($id);
+        $product  = $this -> productRepo -> getProductById($cartItem -> product_id);
         try{
             DB::beginTransaction();
             $data = [
-                'name'          => $request -> name,
-                'code'          => $request -> code,
-                'category_id'   => $request -> category_id,
-                'supplier_id'   => $request -> supplier_id,
-                'buying_price'  => round( $request -> buying_price , 2),
-                'selling_price' => round( $request -> selling_price , 2),
-                'buying_date'   => Carbon::parse($request->buying_date)->format('Y-m-d'),
-                'quantity'      => $request -> quantity
+                'name'      => $product -> name,
+                'quantity'  => ($cartItem -> quantity + 1),
+                'price'     => round( $product -> selling_price , 2),
+                'sub_total' => round( ($product -> selling_price * ($cartItem -> quantity + 1)) , 2),
             ];
-            if ($request -> root){
-                $data['root'] = $request -> root;
-            }else {
-                $data['root'] = null;
-            }
-            if ($request -> newImage) {
-                $data['image'] = uploadPhoto($request -> newImage,'products');
-            }
-            $product->update($data);
-            if ($request -> newImage && !empty($oldImage)){
-                if (file_exists($oldImage)){
-                    unlink($oldImage);
-                }
-            }
+            $cartItem -> update($data);
             DB::commit();
             return (object)[
                 'status'  => true,
-                'message' => 'Product has been Updated Successfully',
+                'message' => 'Cart Updated Successfully',
             ];
         }catch (\Exception $e){
             DB::rollback();
@@ -94,40 +80,47 @@ class PosRepository{
         }
     }
 
-    public function destroyProduct($id){
-        $product = $this -> getProductById($id);
-        $image   = $product -> getRawOriginal('image');
-        try {
-            DB::beginTransaction();
-            $product->delete();
-            if (!empty($image)){
-                if (file_exists($image)){
-                    unlink($image);
-                }
-            }
-            DB::commit();
-            return (object)[
-                'status'  => true,
-                'message' => 'Product has been Deleted Successfully'
-            ];
-        }catch (\Exception $e){
-            DB::rollback();
+    public function decrementCart($id){
+        $cartItem = $this -> getCartItemById($id);
+        if ($cartItem -> quantity == 1){
             return (object)[
                 'status'  => false,
-                'message' => 'Something wrong happened! Please, try again.'
+                'message' => 'Quantity Minimum is 1 !!'
             ];
         }
-    }
-
-    public function updateProductStock($id,$request){
-        $product = $this->getProductById($id);
+        $product  = $this -> productRepo -> getProductById($cartItem -> product_id);
         try{
             DB::beginTransaction();
-            $product->update(['quantity' => intval($request -> quantity)]);
+            $data = [
+                'name'      => $product -> name,
+                'quantity'  => ($cartItem -> quantity - 1),
+                'price'     => round( $product -> selling_price , 2),
+                'sub_total' => round( ($product -> selling_price * ($cartItem -> quantity - 1)) , 2),
+            ];
+            $cartItem -> update($data);
             DB::commit();
             return (object)[
                 'status'  => true,
-                'message' => 'Product Stock has been Updated Successfully',
+                'message' => 'Cart Updated Successfully',
+            ];
+        }catch (\Exception $e){
+            DB::rollback();
+            return (object)[
+                'status'  => false,
+                'message' => 'Something wrong happened! Please, try again.'
+            ];
+        }
+    }
+
+    public function removeFromCart($id){
+        $cartItem = $this -> getCartItemById($id);
+        try {
+            DB::beginTransaction();
+            $cartItem->delete();
+            DB::commit();
+            return (object)[
+                'status'  => true,
+                'message' => 'Product Removed from Cart Successfully'
             ];
         }catch (\Exception $e){
             DB::rollback();

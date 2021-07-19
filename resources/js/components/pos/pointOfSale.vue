@@ -20,33 +20,40 @@
                         <table class="table align-items-center table-flush">
                             <thead class="thead-light">
                             <tr>
-                                <th>Name</th>
-                                <th>Qty</th>
-                                <th>Unit</th>
-                                <th>Total</th>
-                                <th>Action</th>
+                                <th class="pl-2 pr-1">Name</th>
+                                <th class="pl-1 pr-1 text-center" width="25%">Qty</th>
+                                <th class="pl-1 pr-1 text-center">Unit</th>
+                                <th class="pl-1 pr-1 text-center">Total</th>
+                                <th class="pl-1 pr-1 text-center">Action</th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody v-if="carts.length > 0">
 
                             <tr v-for="cart in carts" :key="cart.id">
-                                <td>{{ cart.name }}</td>
-                                <td><input type="text" readonly="" style="width: 15px;" :value="cart.quantity">
-                                    <button @click.prevent="increment(cart.id)" class="btn btn-sm btn-success">+
+                                <td class="pl-2 pr-1">{{ cart.name }}</td>
+                                <td class="pl-1 pr-1 text-center">
+                                    (&nbsp;<span style="font-weight: bold; font-size: medium;">{{cart.quantity}}</span>&nbsp;)&nbsp;
+                                    <button @click.prevent="increment(cart.id)" class="btn btn-sm btn-success btnPadding">+
                                     </button>
-                                    <button @click.prevent="decrement(cart.id)" class="btn btn-sm btn-danger"
+                                    <button @click.prevent="decrement(cart.id)" class="btn btn-sm btn-danger btnPadding"
                                             v-if="cart.quantity >= 2">-
                                     </button>
-                                    <button class="btn btn-sm btn-danger" v-else="" disabled="">-</button>
+                                    <button class="btn btn-sm btn-danger btnPadding" v-else="" disabled="disabled">-</button>
                                 </td>
-                                <td>{{ cart.price }}</td>
-                                <td>{{ cart.sub_total }}</td>
-                                <td>
+                                <td class="pl-1 pr-1 text-center">{{ cart.price }}</td>
+                                <td class="pl-1 pr-1 text-center">{{ cart.sub_total }}</td>
+                                <td class="pl-1 pr-1 text-center">
                                     <a @click="removeItem(cart.id)" class="btn btn-sm btn-primary"
                                        style="color: #FFFFFF;">X</a>
                                 </td>
                             </tr>
                             </tbody>
+                            <tbody v-else>
+                                <tr>
+                                    <td colspan="5" class="text-center" style="font-weight: bold; color: #fc544b;">Cart is Empty !!!</td>
+                                </tr>
+                            </tbody>
+
                         </table>
                     </div>
                     <div class="card-footer">
@@ -60,30 +67,27 @@
                             </li>
 
                             <li class="list-group-item d-flex justify-content-between align-items-center">Vat:
-                                <strong>{{ vats.vat }} %</strong>
+                                <strong>{{ vatValue.vat }} %</strong>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">Total :
-                                <strong>{{ subTotal*vats.vat /100 + subTotal}} $</strong>
+                                <strong>{{ total }} $</strong>
                             </li>
 
                         </ul>
                         <br>
 
                         <form @submit.prevent="orderDone">
-                            <label>Customer Name</label>
-                            <select class="form-control" v-model="customer_id">
+                            <label for="customer_id">Customer Name</label>
+                            <select class="form-control" id="customer_id" v-model="customer_id">
                                 <option :value="customer.id" v-for="customer in customers">{{customer.name }}
                                 </option>
                             </select>
-
-                            <label>Pay</label>
-                            <input type="text" class="form-control" required="" v-model="pay">
-
-                            <label>Due</label>
-                            <input type="text" class="form-control" required="" v-model="due">
-
-                            <label>Pay By</label>
-                            <select class="form-control" v-model="payBy">
+                            <label for="pay">Pay</label>
+                            <input type="text" id="pay" class="form-control" required="" v-model="pay">
+                            <label for="due">Due</label>
+                            <input type="text" id="due" class="form-control" required="" v-model="due">
+                            <label for="payBy">Pay By</label>
+                            <select id="payBy" class="form-control" v-model="payBy">
                                 <option value="HandCash">Hand Cash</option>
                                 <option value="Cheque">Cheque</option>
                                 <option value="GiftCard">Gift Card</option>
@@ -116,7 +120,7 @@
                                 <input type="text" v-model="searchTerm" class="form-control mb-2"
                                        style="width: 100%;"
                                        placeholder="Search Products">
-                                <div class="row">
+                                <div class="row" v-if="filterSearch.length > 0">
                                     <div class="col-lg-4 col-md-4 col-sm-6 col-6" v-for="product in filterSearch"
                                          :key="product.id">
                                         <div class="card" style="margin-bottom: 5px; width: 100%; height: 95%;">
@@ -137,7 +141,10 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <div v-else>
+                                    <br>
+                                    <h5 class="text-center" style="font-weight: bold; color: #fc544b;">There are no Products !!!</h5>
+                                </div>
                             </div>
 
 
@@ -151,7 +158,7 @@
                                        style="width: 100%;"
                                        placeholder="Search Products">
 
-                                <div class="row">
+                                <div class="row" v-if="categoryFilterSearch.length > 0">
                                     <div class="col-lg-4 col-md-4 col-sm-6 col-6"
                                          v-for="catProduct in categoryFilterSearch"
                                          :key="catProduct.id">
@@ -169,12 +176,14 @@
                                                         </small>
                                                         <small class="badge badge-danger" v-else=" ">Stock Out</small>
                                                     </div>
-
                                                 </div>
                                             </a>
                                         </div>
-
                                     </div>
+                                </div>
+                                <div v-else>
+                                    <br>
+                                    <h5 class="text-center" style="font-weight: bold; color: #fc544b;">There are no Products !!!</h5>
                                 </div>
                             </div>
                         </div>
@@ -209,7 +218,7 @@
                 categorySearchTerm: '',
                 customers: '',
                 carts: [],
-                vats: '',
+                vatValue: '',
                 errors: {},
             }
         },
@@ -234,11 +243,15 @@
             subTotal() {
                 let sum = 0;
                 for (let i = 0; i < this.carts.length; i++) {
-                    sum += (Math.fround((parseFloat(this.carts[i].pro_quantity) * parseFloat(this.carts[i].product_price))).toFixed(2));
+                    sum += (parseFloat(this.carts[i].quantity) * parseFloat(this.carts[i].price));
                 }
-                return sum;
+                return Math.fround(sum).toFixed(2);
             },
-
+            total() {
+                let vat = parseFloat(this.subTotal * (this.vatValue.vat / 100));
+                let sub_total = parseFloat(this.subTotal);
+                return Math.fround(vat + sub_total).toFixed(2);
+            }
         },
 
         methods: {
@@ -251,8 +264,10 @@
                         .then(res => {
                             if (res.data.status) {
                                 Reload.$emit('AfterAdd');
+                                Notification.customSuccess(res.data.message);
+                            }else {
+                                Notification.customError(res.data.message);
                             }
-                            Notification.customSuccess(res.data.message);
                         })
                         .catch(err => {
                             if (typeof (err.response.data.errors) != 'undefined') {
@@ -271,47 +286,93 @@
                     .catch()
             },
             removeItem(id) {
-                axios.get('/api/remove/cart/' + id)
-                    .then(() => {
-                        Reload.$emit('AfterAdd');
-                        Notification.cart_delete()
-                    })
-                    .catch()
+                if (!User.loggedIn()) {
+                    this.$router.push({name: '/'})
+                } else {
+                    axios.post('/api/pos/cart/remove/' + id)
+                        .then(res => {
+                            if (res.data.status) {
+                                Reload.$emit('AfterAdd');
+                                Notification.customSuccess(res.data.message);
+                            }else {
+                                Notification.customError(res.data.message);
+                            }
+                        })
+                        .catch(err => {
+                            if (typeof (err.response.data.errors) != 'undefined') {
+                                this.errors = err.response.data.errors
+                            } else if ((typeof (err.response.data.status) != 'undefined') && !err.response.data.status) {
+                                Notification.customError(err.response.data.message);
+                            } else {
+                                Notification.error();
+                            }
+                        })
+                }
             },
             increment(id) {
-                axios.get('/api/increment/' + id)
-                    .then(() => {
-                        Reload.$emit('AfterAdd');
-                        Notification.success()
-                    })
-                    .catch()
+                if (!User.loggedIn()) {
+                    this.$router.push({name: '/'})
+                } else {
+                    axios.post('/api/pos/cart/increment/' + id)
+                        .then(res => {
+                            if (res.data.status) {
+                                Reload.$emit('AfterAdd');
+                                Notification.customSuccess(res.data.message);
+                            }else {
+                                Notification.customError(res.data.message);
+                            }
+                        })
+                        .catch(err => {
+                            if (typeof (err.response.data.errors) != 'undefined') {
+                                this.errors = err.response.data.errors
+                            } else if ((typeof (err.response.data.status) != 'undefined') && !err.response.data.status) {
+                                Notification.customError(err.response.data.message);
+                            } else {
+                                Notification.error();
+                            }
+                        })
+                }
             },
             decrement(id) {
-                axios.get('/api/decrement/' + id)
-                    .then(() => {
-                        Reload.$emit('AfterAdd');
-                        Notification.success()
-                    })
-                    .catch()
+                if (!User.loggedIn()) {
+                    this.$router.push({name: '/'})
+                } else {
+                    axios.post('/api/pos/cart/decrement/' + id)
+                        .then(res => {
+                            if (res.data.status) {
+                                Reload.$emit('AfterAdd');
+                                Notification.customSuccess(res.data.message);
+                            }else {
+                                Notification.customError(res.data.message);
+                            }
+                        })
+                        .catch(err => {
+                            if (typeof (err.response.data.errors) != 'undefined') {
+                                this.errors = err.response.data.errors
+                            } else if ((typeof (err.response.data.status) != 'undefined') && !err.response.data.status) {
+                                Notification.customError(err.response.data.message);
+                            } else {
+                                Notification.error();
+                            }
+                        })
+                }
             },
             vat() {
-                axios.get('/api/vats/')
-                    .then(({data}) => (this.vats = data))
+                axios.get('/api/settings/vat')
+                    .then(({data}) => (this.vatValue = data))
                     .catch()
             },
             orderDone() {
-                let total = this.subtotal * this.vats.vat / 100 + this.subtotal;
                 var data = {
                     qty: this.qty,
-                    subtotal: this.subtotal,
+                    subtotal: this.subTotal,
                     customer_id: this.customer_id,
-                    payby: this.payby,
+                    payby: this.payBy,
                     pay: this.pay,
                     due: this.due,
-                    vat: this.vats.vat,
-                    total: total
+                    vat: this.vatValue.vat,
+                    total: this.total
                 };
-
                 axios.post('/api/orderdone', data)
                     .then(() => {
                         Notification.success();
@@ -319,7 +380,6 @@
                     })
 
             },
-
             // End Cart Methods
             allProducts() {
                 axios.get('/api/products')
@@ -331,7 +391,6 @@
                     .then(({data}) => (this.categories = data))
                     .catch()
             },
-
             allCustomers() {
                 axios.get('/api/customers')
                     .then(({data}) => (this.customers = data))
@@ -342,8 +401,6 @@
                     .then(({data}) => (this.catProducts = data))
                     .catch()
             }
-
-
         },
         mounted() {
             this.allProducts();
@@ -366,5 +423,11 @@
     .pos_pro_photo {
         height: 150px;
         width: 100%;
+    }
+    .btnPadding {
+        padding-right: 5px;
+        padding-left: 5px;
+        padding-top: 1px;
+        padding-bottom: 1px;
     }
 </style>

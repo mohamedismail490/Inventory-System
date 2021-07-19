@@ -16,7 +16,6 @@ class Pos extends Model
     public function getSubTotalAttribute($value){
         return round( $value , 2);
     }
-
     public function product(){
         return $this->belongsTo(Product::class)->withDefault();
     }

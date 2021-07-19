@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ProductStockUpdateRequest;
-use App\Http\Requests\ProductUpdateRequest;
+use App\Models\Pos;
 use App\Models\Product;
 use App\Repositories\PosRepository;
 use App\Repositories\ProductRepository;
-use Illuminate\Http\Request;
 
 class PosController extends Controller
 {
@@ -30,9 +28,9 @@ class PosController extends Controller
         return $categoryProducts;
     }
 
-    public function addToCart($id, Request $request) {
+    public function addToCart($id) {
         $product = $this -> productRepo -> getProductById($id);
-        $add     = $this->posRepo->addToCart($product, $request);
+        $add     = $this->posRepo->addToCart($product);
         return response()->json($add);
     }
 
@@ -41,18 +39,18 @@ class PosController extends Controller
         return response()->json($product);
     }
 
-    public function update(ProductUpdateRequest $request, Product $product) {
-        $update = $this->productRepo->updateProduct($product -> id, $request);
-        return response()->json($update);
+    public function removeFromCart(Pos $pos) {
+        $remove = $this->posRepo->removeFromCart($pos -> id);
+        return response()->json($remove);
     }
 
-    public function destroy(Product $product) {
-        $destroy = $this->productRepo->destroyProduct($product -> id);
-        return response()->json($destroy);
+    public function incrementCart(Pos $pos) {
+        $increment = $this->posRepo->incrementCart($pos -> id);
+        return response()->json($increment);
     }
 
-    public function stockUpdate(ProductStockUpdateRequest $request, Product $product) {
-        $updateStock = $this->productRepo->updateProductStock($product -> id, $request);
-        return response()->json($updateStock);
+    public function decrementCart(Pos $pos) {
+        $decrement = $this->posRepo->decrementCart($pos -> id);
+        return response()->json($decrement);
     }
 }

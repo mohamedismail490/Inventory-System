@@ -80,5 +80,14 @@ Route::group([ 'middleware' => 'api'], function () {
     Route::group(['prefix' => 'pos'], function () {
         Route::get('', [Api\PosController::class, 'index']);
         Route::post('cart/add/{id}', [Api\PosController::class, 'addToCart']);
+        Route::post('cart/remove/{pos}', [Api\PosController::class, 'removeFromCart']);
+        Route::post('cart/increment/{pos}', [Api\PosController::class, 'incrementCart']);
+        Route::post('cart/decrement/{pos}', [Api\PosController::class, 'decrementCart']);
+    });
+
+    Route::group(['prefix' => 'settings'], function () {
+        Route::get('', [Api\SettingController::class, 'index']);
+        Route::post('update', [Api\SettingController::class, 'update']);
+        Route::get('vat', [Api\SettingController::class, 'vatValue']);
     });
 });

@@ -28,15 +28,20 @@ class OrderRepository{
         if(isset($filter->date) && !empty($filter->date)){
             $orders = $orders->where('order_date', $filter->date);
         }
-        if(isset($filter->paginate)){
-            $orders = $orders->paginate(intval($filter->paginate));
-            $params['paginate'] = intval($filter->paginate);
-            if (!empty($params)) {
-                $orders = $orders->appends($params);
+        if (isset($filter->sum) && !empty($filter->sum)){
+            $orders = $orders->sum($filter->sum);
+        }else{
+            if(isset($filter->paginate)){
+                $orders = $orders->paginate(intval($filter->paginate));
+                $params['paginate'] = intval($filter->paginate);
+                if (!empty($params)) {
+                    $orders = $orders->appends($params);
+                }
+                return $orders;
             }
-            return $orders;
+            $orders = $orders->get();
         }
-        return $orders->get();
+        return $orders;
     }
 
     public function getOrderById($id){

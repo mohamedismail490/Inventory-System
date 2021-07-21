@@ -13,6 +13,10 @@ class ExpenseRepository{
         }
         $expenses = Expense::query()->latest('id');
         $params = [];
+        if(isset($filter->today) && $filter->today){
+            $now = Carbon::now()->format('Y-m-d');
+            $expenses = $expenses->whereDate('expense_date', $now);
+        }
         if(isset($filter->search_txt) && !empty($filter->search_txt)){
             $expenses = $expenses->where(function ($q) use ($filter){
                 $q->where('details','LIKE','%'.$filter->search_txt.'%')
@@ -20,15 +24,21 @@ class ExpenseRepository{
             });
             $params['search_txt'] = $filter->search_txt;
         }
-        if(isset($filter->paginate)){
-            $expenses = $expenses->paginate($filter->paginate);
-            $params['paginate'] = $filter->paginate;
-            if (!empty($params)) {
-                $expenses = $expenses->appends($params);
+        if (isset($filter->sum) && !empty($filter->sum)){
+            $expenses = $expenses->sum($filter->sum);
+        }else{
+            if(isset($filter->paginate)){
+                $expenses = $expenses->paginate($filter->paginate);
+                $params['paginate'] = $filter->paginate;
+                if (!empty($params)) {
+                    $expenses = $expenses->appends($params);
+                }
+                return $expenses;
             }
-            return $expenses;
+            $expenses = $expenses->get();
         }
-        return $expenses->get();
+
+        return $expenses;
     }
 
     public function getExpenseById($id){

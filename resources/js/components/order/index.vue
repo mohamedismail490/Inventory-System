@@ -34,12 +34,12 @@
                                 <tr v-for="order in filterSearch" :key="order.id">
                                     <td class="text-center pl-1 pr-1">#{{ order.id }}</td>
                                     <td class="text-center pl-1 pr-1">{{ order.customer_name }}</td>
-                                    <td class="text-center pl-1 pr-1">{{ order.sub_total }}$</td>
+                                    <td class="text-center pl-1 pr-1">{{ order.sub_total }} $</td>
                                     <td class="text-center pl-1 pr-1">{{ order.vat }}%</td>
-                                    <td class="text-center pl-1 pr-1">{{ order.vat_value }}$</td>
-                                    <td class="text-center pl-1 pr-1">{{ order.total }}$</td>
-                                    <td class="text-center pl-1 pr-1">{{ order.pay }}$</td>
-                                    <td class="text-center pl-1 pr-1">{{ order.due }}$</td>
+                                    <td class="text-center pl-1 pr-1">{{ order.vat_value }} $</td>
+                                    <td class="text-center pl-1 pr-1">{{ order.total }} $</td>
+                                    <td class="text-center pl-1 pr-1">{{ order.pay }} $</td>
+                                    <td class="text-center pl-1 pr-1">{{ order.due }} $</td>
                                     <td class="text-center pl-1 pr-1">{{ order.pay_by }}</td>
                                     <td class="text-center pl-1 pr-1">{{ order.order_date }}</td>
                                     <td>

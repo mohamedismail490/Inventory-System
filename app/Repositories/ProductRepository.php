@@ -24,6 +24,9 @@ class ProductRepository{
             });
             $params['search_txt'] = $filter->search_txt;
         }
+        if(isset($filter->stockOut) && $filter->stockOut){
+            $products = $products->where('quantity', '<', 1);
+        }
         if(isset($filter->category) && !empty($filter->category)){
             $products = $products->where('category_id', $filter->category);
             $params['category'] = $filter->category;

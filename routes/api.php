@@ -98,4 +98,14 @@ Route::group([ 'middleware' => 'api'], function () {
         Route::post('update', [Api\SettingController::class, 'update']);
         Route::get('vat', [Api\SettingController::class, 'vatValue']);
     });
+
+    //Home
+    Route::group(['prefix' => 'home'], function () {
+        Route::get('today/sell', [Api\HomeController::class, 'todaySell']);
+        Route::get('today/income', [Api\HomeController::class, 'todayIncome']);
+        Route::get('today/due', [Api\HomeController::class, 'todayDue']);
+        Route::get('today/expense', [Api\HomeController::class, 'todayExpense']);
+        Route::get('orders/today', [Api\HomeController::class, 'todayOrders']);
+        Route::get('products/stock_out', [Api\HomeController::class, 'stockOutProducts']);
+    });
 });

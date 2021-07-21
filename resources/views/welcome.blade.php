@@ -22,7 +22,7 @@
         <nav id="sidebar"
              v-show="$route.path === '/' || $route.path === '/register' || $route.path === '/forget' ? false : true"
              style="display: none;">
-            <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
+            <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar" style="height: 100%;">
                 <router-link to="/home" class="sidebar-brand d-flex align-items-center justify-content-center">
                     <div class="sidebar-brand-icon">
                         <img src="{{asset('backend/img/logo/logo2.png')}}">

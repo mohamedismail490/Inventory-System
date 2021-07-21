@@ -28,11 +28,11 @@
                                         <div class="col-lg-6 mb-4">
                                             <div class="card">
                                                 <ul class="list-group">
-                                                    <li class="list-group-item"><b>Sub Total :</b> {{ order.sub_total }}$</li>
-                                                    <li class="list-group-item"><b>Vat :</b> {{ order.vat_value }}$&nbsp;&nbsp;(&nbsp;<span style="color: #fc544b;">{{ order.vat }}%</span>&nbsp;)</li>
-                                                    <li class="list-group-item"><b>Total :</b> {{ order.total }}$</li>
-                                                    <li class="list-group-item"><b>Pay Amount :</b> {{ order.pay }}$</li>
-                                                    <li class="list-group-item"><b>Due Amount :</b> {{ order.due }}$</li>
+                                                    <li class="list-group-item"><b>Sub Total :</b> {{ order.sub_total }} $</li>
+                                                    <li class="list-group-item"><b>Vat :</b> {{ order.vat_value }} $&nbsp;&nbsp;(&nbsp;<span style="color: #fc544b;">{{ order.vat }}%</span>&nbsp;)</li>
+                                                    <li class="list-group-item"><b>Total :</b> {{ order.total }} $</li>
+                                                    <li class="list-group-item"><b>Pay Amount :</b> {{ order.pay }} $</li>
+                                                    <li class="list-group-item"><b>Due Amount :</b> {{ order.due }} $</li>
                                                 </ul>
                                             </div>
                                         </div>

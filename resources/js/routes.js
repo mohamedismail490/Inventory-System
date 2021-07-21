@@ -49,6 +49,11 @@ let editCustomer  = require('./components/customer/edit').default;
 // POS Component
 let pos = require('./components/pos/pointOfSale').default;
 
+// Orders Component
+let orders       = require('./components/order/index').default;
+let searchOrders = require('./components/order/search').default;
+let viewOrder    = require('./components/order/show').default;
+
 // Settings
 let settings = require('./components/setting/index').default;
 
@@ -100,6 +105,11 @@ export const routes = [
 
     //POS
     { path: '/pos', component: pos, name:'pos'},
+
+    //Orders
+    { path: '/orders', component: orders, name:'orders'},
+    { path: '/search-orders', component: searchOrders, name:'search-orders'},
+    {path: '/view-order/:id', component: viewOrder, name:'view-order'},
 
     //Settings
     { path: '/settings', component: settings, name:'settings'},

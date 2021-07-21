@@ -76,22 +76,30 @@
                         </ul>
                         <br>
 
-                        <form @submit.prevent="orderDone">
+                        <form @submit.prevent="createOrder">
                             <label for="customer_id">Customer Name</label>
                             <select class="form-control" id="customer_id" v-model="customer_id">
                                 <option :value="customer.id" v-for="customer in customers">{{customer.name }}
                                 </option>
                             </select>
+                            <small class="text-danger" v-if="errors.customer_id">{{ errors.customer_id[0] }}<br>
+                            </small>
                             <label for="pay">Pay</label>
-                            <input type="text" id="pay" class="form-control" required="" v-model="pay">
+                            <input type="text" id="pay" class="form-control" v-model="pay">
+                            <small class="text-danger" v-if="errors.pay">{{ errors.pay[0] }}<br>
+                            </small>
                             <label for="due">Due</label>
-                            <input type="text" id="due" class="form-control" required="" v-model="due">
+                            <input type="text" id="due" class="form-control" v-model="due">
+                            <small class="text-danger" v-if="errors.due">{{ errors.due[0] }}<br>
+                            </small>
                             <label for="payBy">Pay By</label>
                             <select id="payBy" class="form-control" v-model="payBy">
                                 <option value="HandCash">Hand Cash</option>
                                 <option value="Cheque">Cheque</option>
                                 <option value="GiftCard">Gift Card</option>
                             </select>
+                            <small class="text-danger" v-if="errors.pay_by">{{ errors.pay_by[0] }}<br>
+                            </small>
                             <br>
                             <button type="submit" class="btn btn-success">Submit</button>
                         </form>
@@ -339,8 +347,8 @@
                 } else {
                     axios.post('/api/pos/cart/decrement/' + id)
                         .then(res => {
+                            Reload.$emit('AfterAdd');
                             if (res.data.status) {
-                                Reload.$emit('AfterAdd');
                                 Notification.customSuccess(res.data.message);
                             }else {
                                 Notification.customError(res.data.message);
@@ -362,23 +370,32 @@
                     .then(({data}) => (this.vatValue = data))
                     .catch()
             },
-            orderDone() {
+            createOrder() {
                 var data = {
-                    qty: this.qty,
-                    subtotal: this.subTotal,
                     customer_id: this.customer_id,
-                    payby: this.payBy,
+                    pay_by: this.payBy,
                     pay: this.pay,
                     due: this.due,
-                    vat: this.vatValue.vat,
-                    total: this.total
                 };
-                axios.post('/api/orderdone', data)
-                    .then(() => {
-                        Notification.success();
-                        this.$router.push({name: 'home'})
+                axios.post('/api/orders/store', data)
+                    .then(res => {
+                        Reload.$emit('AfterAdd');
+                        if (res.data.status) {
+                            Notification.customSuccess(res.data.message);
+                            this.$router.push({name: 'home'})
+                        }else {
+                            Notification.customError(res.data.message);
+                        }
                     })
-
+                    .catch(err => {
+                        if (typeof (err.response.data.errors) != 'undefined') {
+                            this.errors = err.response.data.errors
+                        } else if ((typeof (err.response.data.status) != 'undefined') && !err.response.data.status) {
+                            Notification.customError(err.response.data.message);
+                        } else {
+                            Notification.error();
+                        }
+                    })
             },
             // End Cart Methods
             allProducts() {

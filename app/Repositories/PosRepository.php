@@ -24,6 +24,19 @@ class PosRepository{
         $isExisted = false;
         if (!empty($existedCartItem)){
             $isExisted = true;
+            if ($product -> quantity < ($existedCartItem -> quantity + 1)){
+                return (object)[
+                    'status'  => false,
+                    'message' => 'Maximum Quantity is ( ' . $product -> quantity . ' ) for ' . $product -> name
+                ];
+            }
+        }else{
+            if ($product -> quantity < 1){
+                return (object)[
+                    'status'  => false,
+                    'message' => 'Stock Out for ' . $product -> name . ' !!!'
+                ];
+            }
         }
         try{
             DB::beginTransaction();
@@ -57,6 +70,18 @@ class PosRepository{
     public function incrementCart($id){
         $cartItem = $this -> getCartItemById($id);
         $product  = $this -> productRepo -> getProductById($cartItem -> product_id);
+        if ($product -> quantity < 1){
+            return (object)[
+                'status'  => false,
+                'message' => 'Stock Out for ' . $product -> name . ' !!!'
+            ];
+        }
+        if ($product -> quantity < ($cartItem -> quantity + 1)){
+            return (object)[
+                'status'  => false,
+                'message' => 'Maximum Quantity is ( ' . $product -> quantity . ' ) for ' . $product -> name
+            ];
+        }
         try{
             DB::beginTransaction();
             $data = [
@@ -82,6 +107,25 @@ class PosRepository{
 
     public function decrementCart($id){
         $cartItem = $this -> getCartItemById($id);
+        $product  = $this -> productRepo -> getProductById($cartItem -> product_id);
+        if ($product -> quantity < 1){
+            return (object)[
+                'status'  => false,
+                'message' => 'Stock Out for ' . $product -> name . ' !!!'
+            ];
+        }
+        if ($product -> quantity < ($cartItem -> quantity - 1)){
+            $cartItem -> update([
+                'name'      => $product -> name,
+                'quantity'  => $product -> quantity,
+                'price'     => round( $product -> selling_price , 2),
+                'sub_total' => round( ($product -> selling_price * $product -> quantity) , 2),
+            ]);
+            return (object)[
+                'status'  => false,
+                'message' => 'Maximum Quantity is ( ' . $product -> quantity . ' ) for ' . $product -> name
+            ];
+        }
         if ($cartItem -> quantity == 1){
             return (object)[
                 'status'  => false,

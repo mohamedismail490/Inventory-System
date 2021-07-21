@@ -34,11 +34,6 @@ class PosController extends Controller
         return response()->json($add);
     }
 
-    public function show(Product $product){
-        $product = $this->productRepo->getProductById($product -> id);
-        return response()->json($product);
-    }
-
     public function removeFromCart(Pos $pos) {
         $remove = $this->posRepo->removeFromCart($pos -> id);
         return response()->json($remove);

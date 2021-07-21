@@ -147,9 +147,23 @@
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap7"
                        aria-expanded="true" aria-controls="collapseBootstrap7">
                         <i class="far fa-fw fa-window-maximize"></i>
-                        <span>Settings</span>
+                        <span>Orders</span>
                     </a>
                     <div id="collapseBootstrap7" class="collapse" aria-labelledby="headingBootstrap"
+                         data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <router-link to="/orders" class="collapse-item">All Orders</router-link>
+                            <router-link to="/search-orders" class="collapse-item">Search Orders</router-link>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap8"
+                       aria-expanded="true" aria-controls="collapseBootstrap8">
+                        <i class="far fa-fw fa-window-maximize"></i>
+                        <span>Settings</span>
+                    </a>
+                    <div id="collapseBootstrap8" class="collapse" aria-labelledby="headingBootstrap"
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <router-link to="/settings" class="collapse-item">All Settings</router-link>

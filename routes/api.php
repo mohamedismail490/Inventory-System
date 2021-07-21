@@ -85,6 +85,14 @@ Route::group([ 'middleware' => 'api'], function () {
         Route::post('cart/decrement/{pos}', [Api\PosController::class, 'decrementCart']);
     });
 
+    //Orders
+    Route::group(['prefix' => 'orders'], function () {
+        Route::get('', [Api\OrderController::class, 'index']);
+        Route::post('store', [Api\OrderController::class, 'store']);
+        Route::get('{order}', [Api\OrderController::class, 'show']);
+        Route::post('search', [Api\OrderController::class, 'search']);
+    });
+
     Route::group(['prefix' => 'settings'], function () {
         Route::get('', [Api\SettingController::class, 'index']);
         Route::post('update', [Api\SettingController::class, 'update']);
